@@ -1,0 +1,573 @@
+/*
+ * 1920x1080 stage for a Samsung TU7100 (Chromium 69, weak GPU).
+ * - No flex `gap`, `inset`, aspect-ratio or :has(): this engine predates them.
+ * - No live radial gradients or blur: the wallpaper JPEG already has its darkening baked in.
+ * - Only transform and opacity animate.
+ */
+
+@font-face { font-family: 'Manrope'; font-weight: 200; src: url('../fonts/manrope-200.woff2') format('woff2'); }
+@font-face { font-family: 'Manrope'; font-weight: 300; src: url('../fonts/manrope-300.woff2') format('woff2'); }
+@font-face { font-family: 'Manrope'; font-weight: 500; src: url('../fonts/manrope-500.woff2') format('woff2'); }
+@font-face { font-family: 'Manrope'; font-weight: 700; src: url('../fonts/manrope-700.woff2') format('woff2'); }
+
+html, body {
+    margin: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: #07080c;
+    color: #fff;
+    font-family: 'Manrope', 'SamsungOne', 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+#wall {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    display: none;
+}
+.screen.on { display: block; }
+
+/* Watching an HDMI device: the TV draws its video beneath the page, so let it show through */
+html.watching, html.watching body { background: transparent; }
+html.watching #wall { display: none; }
+
+/* Keeps white text readable over bright photos; static, so it's drawn once */
+#clock, .section, .label, #hints, #gear {
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.65);
+}
+
+/* ---- Home: clock ---- */
+
+#clock {
+    position: absolute;
+    left: 114px;
+    top: 66px;
+}
+
+#greeting {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 7px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.62);
+    margin-left: 6px;
+}
+
+#time {
+    display: flex;
+    align-items: baseline;
+    font-size: 160px;
+    font-weight: 200;
+    letter-spacing: -4px;
+    line-height: 1;
+    margin-top: 6px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* A slow, soft pulse: opacity only, which the TV composites without repainting */
+#colon {
+    margin: 0 4px;
+    opacity: 0.55;
+    animation: breathe 2s ease-in-out infinite;
+}
+@keyframes breathe {
+    0%, 100% { opacity: 0.85; }
+    50% { opacity: 0.25; }
+}
+
+#ampm {
+    font-size: 40px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-left: 16px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+#subline {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+    margin-left: 6px;
+    font-size: 32px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.66);
+}
+#weekday {
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+    margin-right: 12px;
+}
+
+/* Weather in a small translucent pill; flat colour, no blur */
+#weather {
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+    color: rgba(255, 255, 255, 0.9);
+}
+#weather:not(:empty) {
+    margin-left: 26px;
+    padding: 6px 20px 6px 14px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.13);
+}
+#weather svg {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+}
+
+#gear {
+    position: absolute;
+    top: 104px;
+    right: 120px;
+    width: 76px;
+    height: 76px;
+    border-radius: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.8);
+    transition: transform 0.18s ease-out;
+}
+/* No background, even when focused: the icon itself brightens and grows */
+#gear { color: rgba(255, 255, 255, 0.7); }
+#gear.focused {
+    color: #fff;
+    transform: scale(1.3);
+}
+
+/* ---- Home: rows ---- */
+
+.section {
+    position: absolute;
+    left: 120px;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+}
+#apps-title { top: 370px; }
+#devices-title { top: 708px; }
+
+.row {
+    position: absolute;
+    left: 120px;
+    width: 1800px;
+}
+#apps-row { top: 428px; height: 240px; }
+#devices-row { top: 758px; height: 200px; }
+
+.track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    transition: transform 0.25s ease-out;
+}
+
+.tile-wrap {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    width: 300px;
+    margin-right: 36px;
+    white-space: normal;
+}
+
+.tile {
+    position: relative;
+    width: 300px;
+    height: 170px;
+    border-radius: 26px;
+    background: #1d1e24;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+/* Glossy sheen across the top of every tile: a static linear gradient, painted once */
+.tile::after,
+.device::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0));
+    pointer-events: none;
+}
+/* Hairline edge so dark tiles don't melt into dark wallpapers */
+.tile::before,
+.device::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+}
+
+.brand-mark {
+    width: 96px;
+    height: 96px;
+}
+.tv-icon {
+    max-width: 52%;
+    max-height: 62%;
+}
+.wordmark {
+    font-size: 58px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    text-align: center;
+    padding: 0 16px;
+    line-height: 1;
+}
+
+/* Focused: lifts toward you with a white ring and a deeper shadow */
+.tile-wrap.focused .tile {
+    transform: translateY(-8px) scale(1.1);
+    box-shadow: 0 0 0 4px #fff, 0 30px 60px rgba(0, 0, 0, 0.75);
+}
+
+.label {
+    margin-top: 26px;
+    font-size: 28px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: rgba(255, 255, 255, 0.55);
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s;
+}
+.names-always .label { opacity: 1; }
+.names-focus .focused .label { opacity: 1; }
+.focused .label {
+    color: #fff;
+    font-weight: 700;
+}
+
+/* Number-key shortcut, in the tile's top-left corner */
+.badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 34px;
+    height: 34px;
+    border-radius: 17px;
+    background: rgba(0, 0, 0, 0.42);
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 34px;
+    text-align: center;
+    z-index: 1;
+}
+
+.add .tile {
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: none;
+}
+.add .tile::before { border: 3px dashed rgba(255, 255, 255, 0.28); }
+.add .tile::after { display: none; }
+.plus {
+    font-size: 84px;
+    font-weight: 200;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1;
+}
+
+.device {
+    position: relative;
+    display: inline-flex;
+    vertical-align: top;
+    align-items: center;
+    width: 536px;
+    height: 190px;
+    margin-right: 36px;
+    border-radius: 26px;
+    background: #1d1e24;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    white-space: normal;
+    overflow: hidden;
+}
+.device.focused {
+    transform: translateY(-6px) scale(1.04);
+    box-shadow: 0 0 0 4px #fff, 0 30px 60px rgba(0, 0, 0, 0.75);
+}
+.device-art {
+    flex: none;
+    width: 150px;
+    margin-left: 34px;
+    margin-right: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.device-art .brand-mark { width: 88px; height: 88px; }
+.device-art .wordmark { font-size: 30px; padding: 0; letter-spacing: 0; }
+.device-name {
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.1;
+    padding-right: 26px;
+}
+.device-port {
+    display: flex;
+    align-items: center;
+    margin-top: 14px;
+    font-size: 27px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+}
+.dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    margin-right: 14px;
+    background: #ff5a5f;
+}
+.dot.live { background: #34d17a; }
+
+/* ---- Home: key hints ---- */
+
+#hints {
+    position: absolute;
+    left: 120px;
+    top: 1000px;
+    display: flex;
+    align-items: center;
+    font-size: 26px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+}
+#hints .key {
+    display: inline-block;
+    min-width: 36px;
+    padding: 4px 10px;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 700;
+    color: #fff;
+}
+#hints .what { margin: 0 44px 0 14px; }
+
+/* ---- All apps and Settings ---- */
+
+/* A flat translucent layer over the wallpaper: no blur, which this GPU can't afford */
+.panel { background: rgba(6, 6, 10, 0.82); }
+
+.panel h1 {
+    margin: 0;
+    position: absolute;
+    left: 120px;
+    top: 84px;
+    font-size: 52px;
+    font-weight: 700;
+}
+#all-hint {
+    font-size: 30px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.viewport {
+    position: absolute;
+    left: 100px;
+    top: 196px;
+    width: 1760px;
+    height: 790px;
+    overflow: hidden;
+    padding: 24px 0 0 20px;
+}
+
+.grid { transition: transform 0.25s ease-out; }
+.grid .tile-wrap { margin: 0 36px 50px 0; }
+.grid .label { opacity: 1; }
+.pin {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.footnote {
+    position: absolute;
+    left: 120px;
+    bottom: 48px;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#settings .viewport { height: 740px; }
+#settings-list {
+    width: 1200px;
+    transition: transform 0.2s ease-out;
+}
+.setting {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 76px;
+    margin-bottom: 8px;
+    padding: 0 32px;
+    border-radius: 16px;
+    font-size: 32px;
+    font-weight: 500;
+}
+.setting .value { color: rgba(255, 255, 255, 0.65); }
+.setting.focused { background: #fff; color: #111; }
+.setting.focused .value { color: #333; }
+
+/* ---- Pop-up menu ---- */
+
+#menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+#menu.on { display: flex; }
+#menu .box {
+    width: 640px;
+    padding: 30px;
+    border-radius: 28px;
+    background: #1c1c22;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+}
+#menu-title {
+    font-size: 30px;
+    font-weight: 700;
+    padding: 6px 20px 22px;
+}
+#menu .item {
+    font-size: 30px;
+    font-weight: 500;
+    padding: 18px 20px;
+    border-radius: 14px;
+}
+#menu .item.focused { background: #fff; color: #111; }
+
+/* ---- Toast ---- */
+
+#toast {
+    position: absolute;
+    left: 50%;
+    bottom: 70px;
+    transform: translate(-50%, 30px);
+    padding: 18px 34px;
+    border-radius: 40px;
+    background: rgba(28, 28, 34, 0.95);
+    font-size: 28px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    white-space: nowrap;
+}
+#toast.on {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* ---- Screen saver ---- */
+
+#saver {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    background: #000;
+    overflow: hidden;
+    display: none;
+}
+#saver.on { display: block; }
+
+/* Laid out larger than the screen so it has room to pan */
+#s-photo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2240px;
+    height: 1260px;
+    opacity: 0;
+}
+
+.corner {
+    position: absolute;
+    font-size: 30px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    transition: opacity 0.6s;
+}
+.corner svg {
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
+}
+.corner.big {
+    display: block;
+    font-size: 96px;
+    font-weight: 300;
+    letter-spacing: -2px;
+    line-height: 1;
+}
+.corner.big .sub {
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: 0;
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.7);
+}
+.corner.tl { top: 80px; left: 100px; }
+.corner.tr { top: 80px; right: 100px; text-align: right; }
+.corner.br { bottom: 80px; right: 100px; text-align: right; }
+.corner.bl { bottom: 80px; left: 100px; }
+
+#s-black {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    background: #000;
+    opacity: 0;
+    transition: opacity 3s;
+}
+#s-black.on { opacity: 1; }

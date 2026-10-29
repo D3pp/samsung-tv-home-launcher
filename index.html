@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="names-focus">
+    <img id="wall" alt="">
+
+    <section id="home" class="screen on">
+        <div id="clock">
+            <div id="greeting"></div>
+            <div id="time"><span id="hh"></span><span id="colon">:</span><span id="mm"></span><span id="ampm"></span></div>
+            <div id="subline"><span id="date"><b id="weekday"></b><span id="day"></span></span><span id="weather"></span></div>
+        </div>
+        <div id="gear">
+            <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>
+            </svg>
+        </div>
+        <div id="apps-title" class="section">Apps</div>
+        <div id="apps-row" class="row"><div class="track"></div></div>
+        <div id="devices-title" class="section">Devices</div>
+        <div id="devices-row" class="row"><div class="track"></div></div>
+        <div id="hints"></div>
+    </section>
+
+    <section id="all" class="screen panel">
+        <h1>All apps <span id="all-hint"></span></h1>
+        <div class="viewport"><div id="all-grid" class="grid"></div></div>
+        <div id="all-id" class="footnote"></div>
+    </section>
+
+    <section id="settings" class="screen panel">
+        <h1>Settings</h1>
+        <div class="viewport"><div id="settings-list"></div></div>
+        <div class="footnote">Red: all apps &nbsp;·&nbsp; Green: next wallpaper &nbsp;·&nbsp; Yellow on a Home tile: move or remove</div>
+    </section>
+
+    <div id="menu">
+        <div class="box">
+            <div id="menu-title"></div>
+            <div id="menu-items"></div>
+        </div>
+    </div>
+
+    <div id="saver">
+        <img id="s-photo" alt="">
+        <div id="s-clock" class="corner"></div>
+        <div id="s-weather" class="corner"></div>
+        <div id="s-name" class="corner"></div>
+        <div id="s-black"></div>
+    </div>
+
+    <div id="toast"></div>
+
+    <script src="js/config.js"></script>
+    <!-- Your own TV's settings, if present (gitignored; see js/config.local.example.js) -->
+    <script src="js/config.local.js"></script>
+    <script src="js/devlog.js"></script>
+    <script src="js/mock.js"></script>
+    <script src="js/prefs.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/apps.js"></script>
+    <script src="js/inputs.js"></script>
+    <script src="js/screensaver.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

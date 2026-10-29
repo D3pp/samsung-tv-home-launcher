@@ -1,0 +1,10 @@
+# This TV's own settings and photos
+tv.env
+js/config.local.js
+img/wallpapers/local/
+
+# Build and debug output
+*.wgt
+logs/
+
+.DS_Store
