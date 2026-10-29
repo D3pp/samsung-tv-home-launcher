@@ -4,6 +4,10 @@ A home screen for Samsung Tizen TVs, in place of Samsung's ad-filled one: a big 
 weather, a row of your apps, a row of your HDMI devices, and nothing else. It runs as a normal
 sideloaded app; no root, nothing on the TV is modified.
 
+![The launcher: clock and weather, an apps row and a devices row, on the Milky Way wallpaper](docs/preview.jpg)
+
+*The browser preview with the example config.*
+
 - **Clock and weather:** time-of-day greeting, a thin clock, the date, and the current weather
   from [Open-Meteo](https://open-meteo.com/) (no account or key).
 - **Apps row:** your apps as branded tiles, in the order you like. Yellow on a tile moves or
@@ -18,6 +22,22 @@ sideloaded app; no root, nothing on the TV is modified.
 Built for and tested on a **Samsung UE55TU7100 (2020, Tizen 5.5, Chromium 69)**. Other Tizen TVs
 should work, but nothing else has been tested. Inspired by a friend's Arn0 Launcher; this is a
 separate implementation.
+
+## Build yours with a coding agent
+
+This was built with [Claude Code](https://claude.com/claude-code), and adapting it is a good job
+for one. [`CLAUDE.md`](CLAUDE.md) gives an agent the setup steps, the TV's limits and what's
+already been tried. Clone the repo, open it in your agent and try something like:
+
+```
+Put this launcher on my Samsung TV. Its IP is 192.168.1.50 and Developer Mode is on.
+My HDMI devices are a PS5 on HDMI 1 and an Apple TV on HDMI 2.
+```
+
+```
+Make the apps row look like the screenshot I'm attaching, and use the photos in ~/Pictures/tv
+as wallpapers.
+```
 
 ## Try it in a browser first
 
@@ -169,7 +189,9 @@ deploy.sh, tv.env.example          build, sign and install
 - Number-key shortcuts work while the launcher is on screen, not inside other apps.
 - Settings are stored on the TV and survive updates, not an uninstall.
 
-## Credits
+## Licence and credits
+
+Code and docs: MIT, see [LICENSE](LICENSE). Bundled fonts, logos and data keep their own terms:
 
 Fonts: [Manrope](https://github.com/sharanda/manrope), SIL Open Font License. Logos:
 [Simple Icons](https://simpleicons.org/), CC0; brand names and logos belong to their owners.
